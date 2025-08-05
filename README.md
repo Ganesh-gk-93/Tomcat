@@ -1,30 +1,37 @@
-## Java-Web-Apps ##
+# Jenkins + Docker + Tomcat Sample
 
-###  Copy the project url.
-![5](https://github.com/sampathshivakumar/Java-Web-Apps/assets/119833411/bd17e123-23b4-4a52-ab89-684a66842b31)
+This repository provides a minimal example of launching an Apache Tomcat
+container from a Jenkins pipeline using Docker.
 
-### Clone the project locally using git cmd.
+## Repository structure
+
+- `Dockerfile` – builds a Docker image based on the official Tomcat image
+  and copies a small web application.
+- `Jenkinsfile` – declarative pipeline that builds the image, runs a
+  container and verifies the web page with `curl`.
+- `webapps/ROOT/index.html` – simple HTML page served by Tomcat.
+
+## Run locally
+
+```bash
+docker build -t sample-tomcat .
+docker run -d -p 8080:8080 --name tomcat-demo sample-tomcat
 ```
-git clone https://github.com/sampathshivakumar/Java-Web-Apps.git
 
+Open <http://localhost:8080/> to view the sample page. When finished, stop
+and remove the container:
+
+```bash
+docker rm -f tomcat-demo
 ```
-![6](https://github.com/sampathshivakumar/Java-Web-Apps/assets/119833411/af35d48c-5f1a-4967-9b02-05422ab4a4db)
 
-![7](https://github.com/sampathshivakumar/Java-Web-Apps/assets/119833411/64ae9228-19f5-488e-aacf-cf6adcbf0972)
+## Jenkins pipeline
 
-### Create a package using mvn cmd.
-```
-mvn clean package 
+The provided `Jenkinsfile` performs the following stages:
 
-``` 
-![8](https://github.com/sampathshivakumar/Java-Web-Apps/assets/119833411/b05d6ac7-5146-4e94-8ff4-5f7a7039b2c6)
+1. **Build Docker image** – `docker.build('sample-tomcat')`
+2. **Run container** – `docker run -d -p 8080:8080 --name tomcat-demo sample-tomcat`
+3. **Test** – uses `curl` to confirm the page contains "Hello from Tomcat".
 
-### war file will be created inside target directory after build is successful.
-![9](https://github.com/sampathshivakumar/Java-Web-Apps/assets/119833411/be0ebc4c-42e6-4523-9dec-2e533baa2163)
-
-### Output.
-Deploy the war file on tomcat server to see the following output.
-![output](https://github.com/sampathshivakumar/Java-Web-Apps/assets/119833411/41905126-b51d-4b86-b62b-580c87aeaadf)
-
-
-
+Ensure that the Jenkins agent executing the job has Docker available and the
+Docker Pipeline plugin installed.
