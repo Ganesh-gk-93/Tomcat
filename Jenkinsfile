@@ -20,6 +20,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'curl -s http://localhost:8080/ | grep "Hello from Tomcat"'
+                sh 'curl -s http://localhost:8080/sample/ | grep "Hello from Sample WAR!"'
             }
         }
     }
