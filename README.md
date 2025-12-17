@@ -1,4 +1,4 @@
-# Jenkins + Docker + Tomcat Sample
+# Jenkins + Docker + Tomcat sample . 
 
 This repository provides a minimal example of launching an Apache Tomcat
 container from a Jenkins pipeline using Docker.
